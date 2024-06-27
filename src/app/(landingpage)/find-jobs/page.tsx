@@ -2,43 +2,14 @@
 
 import { CATEGORIES_OPTIONS } from "@/constants";
 import ExploreDataContainer from "@/containers/ExploreDataContainer";
+import useCategoryJobFilter from "@/hooks/useCategoryJobFilter";
+import useJobs from "@/hooks/useJobs";
 import { formFilterSchema } from "@/lib/form-schema";
 import { filterFormType, JobType } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
-
-const FILTER_FORMS: filterFormType[] = [
-	{
-		name:"categories",
-		label:"categories",
-		items : CATEGORIES_OPTIONS
-	},
-];
-
-const dummyData: JobType[] = [
-	{
-		image: "/images/company2.png",
-		jobType: "Full-Time",
-		name: "Social Media",
-		type: "Agency",
-		location: "Paris, France",
-		desc: "lorem",
-		needs: 10,
-		applicants: 5,
-		id: "",
-		category: {
-			id: "",
-			name: "",
-			totalJobs: 0
-		},
-		skills: []
-	}
-]
-
-
 
 
 export default function FindJobsPage() {
@@ -49,22 +20,33 @@ export default function FindJobsPage() {
 		},
 	});
 
+	const { filters } = useCategoryJobFilter();
+	
+	const [categories, setCategories] = useState<string[]>([]);
+
+	const { jobs, isLoading, mutate } = useJobs(categories);
+
 	const onSubmitFormFilter = async (
 		val: z.infer<typeof formFilterSchema>
 	) => {
-		console.log(val);
+		setCategories(val.categories);
 	};
+	useEffect(() => {
+		mutate();
+	}, [categories]);
+
+
 	return (
 		<ExploreDataContainer
 			formFilter={formFilter}
 			onSubmitFilter={onSubmitFormFilter}
-			filterForms={FILTER_FORMS}
+			filterForms={filters}
 			title="dream job"
 			subtitle="Find your next career at companies like HubSpot, Nike,
 			and Dropbox"
-			loading={false}
+			loading={isLoading}
 			type="job"
-			data={dummyData}
+			data={jobs}
 		/>
 	);
 }

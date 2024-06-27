@@ -1,26 +1,21 @@
 import React, { FC } from 'react'
 import Image from "next/image";
 import { Badge } from '@/components/ui/badge';
+import { JobType } from '@/types';
 
-interface JobItemProps {
-	image:string,
-	jobType:string,
-	location:string,
-	name:string,
-	type:string,
-	desc: string,
-	categories: string[],
-	
-}
+interface JobItemProps extends JobType {}
+
 
 const JobItem: FC<JobItemProps> = ({ 
-	categories,
+	category,
 	desc,
 	image,
 	jobType,
 	location,
 	name,
-	type, }) => {
+	type, 
+	skills,
+}) => {
   return (
 	<div className="border border-border p-6 cursor-pointer">
 			<div className="flex flex-row justify-between items-start">
@@ -41,7 +36,7 @@ const JobItem: FC<JobItemProps> = ({
 				</div>
 			</div>
 			<div className="space-x-2">
-				{categories.map((item: string, i: number) => (
+				{skills.map((item: string, i: number) => (
 					<Badge
 						key={item + i}
 						variant="outline"

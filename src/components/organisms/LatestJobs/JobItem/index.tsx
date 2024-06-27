@@ -1,16 +1,10 @@
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { JobType } from "@/types";
 import Image from "next/image";
 import React, { FC } from "react";
 
-interface JobItemProps {
-  image: string;
-  jobType: string;
-  location: string;
-  name: string;
-  type: string;
-  skills: string[];
-}
+interface JobItemProps extends JobType {}
 
 const JobItem: FC<JobItemProps> = ({
   image,
