@@ -11,6 +11,8 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { LOCATION_OPTIONS } from "@/constants";
+import { optionType } from "@/types";
 
 interface FormSearchProps {}
 
@@ -28,13 +30,17 @@ const FormSearch: FC<FormSearchProps> = ({}) => {
 				<div className="inline-flex gap-3 items-center">
 					<HiOutlineLocationMarker className="w-6 h-6" />
 					<Select>
-						<SelectTrigger className="w-[300px] border-none text-gray-500 outline-none py-8">
+						<SelectTrigger className="w-[350px] border-none text-gray-500 outline-none py-5">
 							<SelectValue placeholder="Select a location" />
 						</SelectTrigger>
 						<SelectContent>
-							<SelectItem value="light">Light</SelectItem>
-							<SelectItem value="dark">Dark</SelectItem>
-							<SelectItem value="system">System</SelectItem>
+							{LOCATION_OPTIONS.map(
+								(item: optionType, i: number) => (
+									<SelectItem key={i} value={item.id}>
+										{item.label}
+									</SelectItem>
+								)
+							)}
 						</SelectContent>
 					</Select>
 				</div>
